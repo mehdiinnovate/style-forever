@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Panel - Style Forever</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;font-family:sans-serif}
+body{background:#fff;color:#111;padding:16px;max-width:960px;margin:0 auto;font-size:14px}
+header{border-bottom:1px solid #ccc;padding-bottom:10px;margin-bottom:16px;display:flex;justify-content:space-between;align-items:center}
+h1{font-size:18px}
+nav{display:flex;gap:8px;margin-bottom:16px}
+nav button{padding:6px 12px;border:1px solid #ccc;background:#f5f5f5;cursor:pointer;font-size:13px}
+nav button.active{background:#111;color:#fff;border-color:#111}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px}
+@media(max-width:600px){.stats{grid-template-columns:repeat(2,1fr)}}
+.stat{border:1px solid #ccc;padding:10px}
+.stat span{font-size:12px;color:#555;display:block}
+.stat strong{font-size:18px}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th,td{border:1px solid #ccc;padding:8px;text-align:left}
+th{background:#f5f5f5}
+select{padding:4px;border:1px solid #ccc}
+.hidden{display:none}
+.wrap{overflow-x:auto}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Style Forever</h1>
+  <span>Admin</span>
+</header>
+
+<nav>
+  <button class="active" onclick="showTab('orders',this)">Orders</button>
+  <button onclick="showTab('products',this)">Products</button>
+</nav>
+
+<div class="stats">
+  <div class="stat"><span>Total Sales</span><strong>৳4,880</strong></div>
+  <div class="stat"><span>Orders</span><strong>4</strong></div>
+  <div class="stat"><span>Pending</span><strong id="pCount">2</strong></div>
+  <div class="stat"><span>Products</span><strong>3</strong></div>
+</div>
+
+<div id="tab-orders" class="wrap">
+  <table>
+    <thead>
+      <tr>
+        <th>Order ID</th>
+        <th>Customer</th>
+        <th>Phone</th>
+        <th>Address</th>
+        <th>Item</th>
+        <th>Total</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody id="ordersList"></tbody>
+  </table>
+</div>
+
+<div id="tab-products" class="wrap hidden">
+  <table>
+    <thead>
+      <tr>
+        <th>Product</th>
+        <th>Category</th>
+        <th>Price</th>
+        <th>Stock</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>Premium Cotton Polo</td><td>Polo</td><td>৳650</td><td>42</td></tr>
+      <tr><td>Classic Denim Shirt</td><td>Shirts</td><td>৳900</td><td>18</td></tr>
+      <tr><td>Winter Fleece Hoodie</td><td>Hoodies</td><td>৳1,100</td><td>25</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<script>
+const orders = [
+  {id:"#1024",name:"Rakib Hasan",phone:"01712345678",address:"Mirpur 10, Dhaka",item:"Cotton Polo (L x 1)",total:"৳710",status:"Pending"},
+  {id:"#1023",name:"Tanvir Ahmed",phone:"01819876543",address:"Agrabad, Chattogram",item:"Denim Shirt (XL x 2)",total:"৳1,930",status:"Confirmed"},
+  {id:"#1022",name:"Nusrat Jahan",phone:"01911223344",address:"Dhanmondi, Dhaka",item:"Fleece Hoodie (M x 1)",total:"৳1,160",status:"Delivered"},
+  {id:"#1021",name:"Sabbir Hossain",phone:"01677889900",address:"Zindabazar, Sylhet",item:"Cotton Polo (M x 1)",total:"৳1,080",status:"Pending"}
+];
+
+function renderOrders(){
+  document.getElementById("pCount").innerText = orders.filter(o => o.status === "Pending").length;
+  document.getElementById("ordersList").innerHTML = orders.map((o,i) =>
+    `<tr>
+      <td>${o.id}</td>
+      <td>${o.name}</td>
+      <td>${o.phone}</td>
+      <td>${o.address}</td>
+      <td>${o.item}</td>
+      <td>${o.total}</td>
+      <td>
+        <select onchange="orders[${i}].status=this.value;renderOrders()">
+          <option ${o.status==="Pending"?"selected":""}>Pending</option>
+          <option ${o.status==="Confirmed"?"selected":""}>Confirmed</option>
+          <option ${o.status==="Delivered"?"selected":""}>Delivered</option>
+          <option ${o.status==="Cancelled"?"selected":""}>Cancelled</option>
+        </select>
+      </td>
+    </tr>`
+  ).join("");
+}
+
+function showTab(name,btn){
+  document.getElementById("tab-orders").classList.toggle("hidden", name !== "orders");
+  document.getElementById("tab-products").classList.toggle("hidden", name !== "products");
+  document.querySelectorAll("nav button").forEach(b => b.classList.remove("active"));
+  btn.classList.add("active");
+}
+
+renderOrders();
+</script>
+</body>
+</html>
