@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Style Forever</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;font-family:system-ui,-apple-system,sans-serif}
+body{background:#f8faf9;color:#111;line-height:1.5}
+a{text-decoration:none;color:inherit}
+.topbar{background:#061B18;color:#e6f3ee;text-align:center;font-size:12px;padding:7px 12px;font-weight:600}
+header{background:#fff;border-bottom:1px solid #d7e8e4;position:sticky;top:0;z-index:20}
+.nav-wrap{max-width:1140px;margin:0 auto;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:18px;color:#005C4F}
+.brand img{height:34px;width:auto;object-fit:contain}
+.nav-links{display:flex;align-items:center;gap:16px;font-size:13px;font-weight:700}
+.nav-links a:hover{color:#005C4F}
+.nav-actions{display:flex;align-items:center;gap:8px}
+.search-input{padding:7px 12px;border:1px solid #cbd5e1;border-radius:6px;font-size:13px;width:180px;outline:none}
+.search-input:focus{border-color:#005C4F}
+.cart-btn{background:#005C4F;color:#fff;padding:7px 14px;border-radius:6px;font-size:13px;font-weight:700}
+.container{max-width:1140px;margin:0 auto;padding:16px}
+.hero{width:100%;height:280px;border-radius:10px;overflow:hidden;border:1px solid #d7e8e4;margin-bottom:24px;background:#eaf4f1}
+.hero img{width:100%;height:100%;object-fit:cover;display:block}
+@media(max-width:600px){.hero{height:180px}.search-input{width:130px}}
+.sec-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid #d7e8e4}
+.sec-head h2{font-size:17px;font-weight:800;color:#071A16}
+.cat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:30px}
+@media(max-width:700px){.cat-row{grid-template-columns:repeat(2,1fr)}}
+.cat-card{position:relative;aspect-ratio:4/3;border-radius:10px;overflow:hidden;border:1px solid #d7e8e4;cursor:pointer;background:#fff}
+.cat-card img{width:100%;height:100%;object-fit:cover}
+.cat-card span{position:absolute;bottom:10px;left:50%;transform:translateX(-50%);background:#005C4F;color:#fff;font-size:12px;font-weight:700;padding:5px 14px;border-radius:6px;white-space:nowrap}
+.prod-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:36px}
+@media(max-width:900px){.prod-grid{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:600px){.prod-grid{grid-template-columns:repeat(2,1fr);gap:10px}}
+.prod-card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;overflow:hidden;display:flex;flex-direction:column}
+.prod-card img{width:100%;aspect-ratio:3/4;object-fit:cover;background:#f8fafc;cursor:pointer}
+.prod-body{padding:10px;display:flex;flex-direction:column;flex:1;justify-content:space-between}
+.prod-title{font-size:13px;font-weight:700;color:#111;margin-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.prod-price{font-size:15px;font-weight:800;color:#005C4F}
+.prod-old{font-size:12px;color:#888;text-decoration:line-through;margin-left:6px;font-weight:400}
+.sizes{display:flex;gap:4px;flex-wrap:wrap;margin:6px 0}
+.sizes span{font-size:10px;font-weight:700;padding:2px 6px;border:1px solid #d7e8e4;background:#f0f7f5;color:#005C4F;border-radius:4px}
+.btn-row{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px}
+.btn-cart{background:#fff;border:1px solid #005C4F;color:#005C4F;padding:7px;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer}
+.btn-buy{background:#005C4F;border:1px solid #005C4F;color:#fff;padding:7px;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer}
+footer{background:#061B18;color:#d4e7e2;padding:30px 16px;margin-top:20px}
+.foot-wrap{max-width:1140px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:24px;font-size:13px}
+@media(max-width:700px){.foot-wrap{grid-template-columns:1fr}}
+.foot-wrap h3{color:#008F7A;font-size:13px;text-transform:uppercase;margin-bottom:10px}
+.foot-wrap a{display:block;margin-bottom:6px;color:#d4e7e2}
+.foot-bottom{max-width:1140px;margin:20px auto 0;padding-top:14px;border-top:1px solid #133b33;font-size:12px;text-align:center;color:#94b8af}
+</style>
+</head>
+<body>
+
+<div class="topbar">Cash on Delivery Available Nationwide · Fast Home Delivery</div>
+
+<header>
+  <div class="nav-wrap">
+    <a href="index.html" class="brand">
+      <img src="https://res.cloudinary.com/dwgvvzbvn/image/upload/v1788708839/b5fnlbs8a19t3hutx5wd.jpg" alt="Logo">
+      <span>Style Forever</span>
+    </a>
+    <nav class="nav-links">
+      <a href="javascript:void(0)" onclick="filterCat('All')">Home</a>
+      <a href="javascript:void(0)" onclick="filterCat('All')">All Products</a>
+      <a href="checkout.html">Checkout</a>
+    </nav>
+    <div class="nav-actions">
+      <input type="text" id="searchBox" class="search-input" placeholder="Search..." oninput="renderProducts()">
+      <a href="cart.html" class="cart-btn">Bag (<span id="cartCount">0</span>)</a>
+    </div>
+  </div>
+</header>
+
+<div class="container">
+  <div class="hero">
+    <img src="https://res.cloudinary.com/dwgvvzbvn/image/upload/v1788708839/b5fnlbs8a19t3hutx5wd.jpg" alt="Style Forever">
+  </div>
+
+  <div class="sec-head">
+    <h2>Categories</h2>
+    <button onclick="filterCat('All')" style="background:none;border:none;color:#005C4F;font-weight:700;cursor:pointer;font-size:13px">View All</button>
+  </div>
+  <div class="cat-row" id="catList"></div>
+
+  <div class="sec-head">
+    <h2 id="prodHeading">All Products</h2>
+    <span id="prodCount" style="font-size:12px;color:#555">0 items</span>
+  </div>
+  <div class="prod-grid" id="prodGrid"></div>
+</div>
+
+<footer>
+  <div class="foot-wrap">
+    <div>
+      <h3>Style Forever</h3>
+      <p style="font-size:12px;line-height:1.6">Premium apparel and modern essentials delivered across Bangladesh.</p>
+    </div>
+    <div>
+      <h3>Quick Links</h3>
+      <a href="index.html">Home</a>
+      <a href="cart.html">Shopping Bag</a>
+      <a href="checkout.html">Checkout</a>
+    </div>
+    <div>
+      <h3>Contact</h3>
+      <p style="font-size:12px;margin-bottom:6px">Mirpur, Dhaka, Bangladesh</p>
+      <a href="tel:01989662768">01989662768</a>
+      <a href="mailto:styleforeverbd00@gmail.com">styleforeverbd00@gmail.com</a>
+    </div>
+  </div>
+  <div class="foot-bottom">&copy; 2026 Style Forever. All rights reserved.</div>
+</footer>
+
+<script>
+const CATEGORIES = [
+  { name: "Polo", img: "https://res.cloudinary.com/dwgvvzbvn/image/upload/v1788708839/b5fnlbs8a19t3hutx5wd.jpg" },
+  { name: "Shirts", img: "https://res.cloudinary.com/dwgvvzbvn/image/upload/v1788708839/b5fnlbs8a19t3hutx5wd.jpg" },
+  { name: "Hoodies", img: "https://res.cloudinary.com/dwgvvzbvn/image/upload/v1788708839/b5fnlbs8a19t3hutx5wd.jpg" },
+  { name: "Pants", img: "https://res.cloudinary.com/dwgvvzbvn/image/upload/v1788708839/b5fnlbs8a19t3hutx5wd.jpg" }
+];
+
+const PRODUCTS = [
+  { id: 1, name: "Premium Cotton Polo", category: "Polo", price: 650, oldPrice: 850, sizes: ["M","L","XL"], img: "https://res.cloudinary.com/dwgvvzbvn/image/upload/v1788708839/b5fnlbs8a19t3hutx5wd.jpg" },
+  { id: 2, name: "Classic Denim Shirt", category: "Shirts", price: 900, oldPrice: 1150, sizes: ["M","L","XL","XXL"], img: "https://res.cloudinary.com/dwgvvzbvn/image/upload/v1788708839/b5fnlbs8a19t3hutx5wd.jpg" },
+  { id: 3, name: "Winter Fleece Hoodie", category: "Hoodies", price: 1100, oldPrice: 1400, sizes: ["L","XL"], img: "https://res.cloudinary.com/dwgvvzbvn/image/upload/v1788708839/b5fnlbs8a19t3hutx5wd.jpg" },
+  { id: 4, name: "Slim Fit Chino Pant", category: "Pants", price: 950, oldPrice: 1200, sizes: ["30","32","34","36"], img: "https://res.cloudinary.com/dwgvvzbvn/image/upload/v1788708839/b5fnlbs8a19t3hutx5wd.jpg" },
+  { id: 5, name: "Signature Collar Polo", category: "Polo", price: 700, oldPrice: 900, sizes: ["M","L","XL"], img: "https://res.cloudinary.com/dwgvvzbvn/image/upload/v1788708839/b5fnlbs8a19t3hutx5wd.jpg" },
+  { id: 6, name: "Casual Oxford Shirt", category: "Shirts", price: 850, oldPrice: 1050, sizes: ["S","M","L","XL"], img: "https://res.cloudinary.com/dwgvvzbvn/image/upload/v1788708839/b5fnlbs8a19t3hutx5wd.jpg" }
+];
+
+let activeCat = "All";
+let cartCount = 0;
+
+function renderCategories() {
+  document.getElementById("catList").innerHTML = CATEGORIES.map(c =>
+    `<div class="cat-card" onclick="filterCat('${c.name}')">
+      <img src="${c.img}" alt="${c.name}">
+      <span>${c.name}</span>
+    </div>`
+  ).join("");
+}
+
+function filterCat(cat) {
+  activeCat = cat;
+  document.getElementById("prodHeading").innerText = cat === "All" ? "All Products" : cat;
+  renderProducts();
+}
+
+function renderProducts() {
+  const q = document.getElementById("searchBox").value.trim().toLowerCase();
+  const list = PRODUCTS.filter(p => {
+    const matchCat = activeCat === "All" || p.category === activeCat;
+    const matchQ = !q || p.name.toLowerCase().includes(q) || p.category.toLowerCase().includes(q);
+    return matchCat && matchQ;
+  });
+
+  document.getElementById("prodCount").innerText = list.length + " items";
+  const grid = document.getElementById("prodGrid");
+  if (!list.length) {
+    grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:#666">No products found</div>';
+    return;
+  }
+
+  grid.innerHTML = list.map(p =>
+    `<div class="prod-card">
+      <img src="${p.img}" alt="${p.name}" onclick="location.href='checkout.html'">
+      <div class="prod-body">
+        <div>
+          <div class="prod-title">${p.name}</div>
+          <div>
+            <span class="prod-price">৳${p.price}</span>
+            ${p.oldPrice ? `<span class="prod-old">৳${p.oldPrice}</span>` : ""}
+          </div>
+          <div class="sizes">${p.sizes.map(s => `<span>${s}</span>`).join("")}</div>
+        </div>
+        <div class="btn-row">
+          <button class="btn-cart" onclick="addToCart()">Add to Bag</button>
+          <button class="btn-buy" onclick="location.href='checkout.html'">Buy Now</button>
+        </div>
+      </div>
+    </div>`
+  ).join("");
+}
+
+function addToCart() {
+  cartCount++;
+  document.getElementById("cartCount").innerText = cartCount;
+}
+
+renderCategories();
+renderProducts();
+</script>
+</body>
+</html>
