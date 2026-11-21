@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Checkout - Style Forever</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;font-family:system-ui,-apple-system,sans-serif}
+body{background:#f7f7f7;color:#111;line-height:1.5}
+.hidden{display:none!important}
+header{background:#fff;border-bottom:1px solid #e5e5e5;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10}
+.back-btn{background:#fff;border:1px solid #d4d4d4;padding:6px 12px;border-radius:6px;cursor:pointer;font-size:13px;font-weight:600}
+.brand{font-weight:700;font-size:16px}
+.container{max-width:900px;margin:20px auto;padding:0 16px}
+.card{background:#fff;border:1px solid #e5e5e5;border-radius:8px;padding:18px;margin-bottom:16px}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+@media(max-width:700px){.grid-2{grid-template-columns:1fr}}
+.prod-img{width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:6px;border:1px solid #eee;background:#fafafa}
+h1{font-size:20px;margin-bottom:8px}
+h2{font-size:16px;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid #eee}
+.price{font-size:22px;font-weight:700;color:#005C4F;margin-bottom:14px}
+.old-price{font-size:14px;color:#888;text-decoration:line-through;margin-left:8px;font-weight:400}
+.label{display:block;font-size:13px;font-weight:600;margin-bottom:6px;margin-top:12px}
+.size-list{display:flex;gap:8px;flex-wrap:wrap}
+.size-btn{padding:8px 14px;border:1px solid #ccc;background:#fff;border-radius:6px;cursor:pointer;font-size:13px;font-weight:600}
+.size-btn.active{border-color:#005C4F;background:#f0f7f5;color:#005C4F}
+.qty-box{display:inline-flex;align-items:center;border:1px solid #ccc;border-radius:6px;overflow:hidden}
+.qty-box button{width:34px;height:34px;border:none;background:#f5f5f5;cursor:pointer;font-size:16px;font-weight:700}
+.qty-box span{width:40px;text-align:center;font-size:14px;font-weight:600}
+.btn-primary{width:100%;background:#005C4F;color:#fff;border:none;padding:13px;border-radius:6px;font-size:14px;font-weight:700;cursor:pointer;margin-top:16px}
+.btn-primary:hover{background:#00483e}
+input,textarea,select{width:100%;padding:10px;border:1px solid #d4d4d4;border-radius:6px;font-size:13px;background:#fff;outline:none}
+input:focus,textarea:focus,select:focus{border-color:#005C4F}
+.zone-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:6px}
+.zone-opt{border:1px solid #d4d4d4;border-radius:6px;padding:8px;font-size:12px;cursor:pointer;display:flex;align-items:center;gap:6px}
+.zone-opt input{width:auto}
+.row{display:flex;justify-content:space-between;font-size:13px;margin-bottom:8px}
+.total-row{display:flex;justify-content:space-between;font-size:16px;font-weight:700;padding-top:10px;border-top:1px solid #eee;margin-top:10px}
+.coupon-row{display:flex;gap:8px;margin:12px 0}
+.coupon-btn{background:#222;color:#fff;border:none;padding:0 16px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer}
+.err-msg{color:#dc2626;font-size:12px;margin-top:8px;font-weight:600}
+.ok-msg{color:#005C4F;font-size:12px;margin-top:6px;font-weight:600}
+.summary-item{display:flex;align-items:center;gap:10px;padding-bottom:10px;border-bottom:1px solid #eee;margin-bottom:10px}
+.summary-item img{width:48px;height:48px;object-fit:cover;border-radius:4px;border:1px solid #eee}
+.success-box{text-align:center;padding:30px 16px}
+.success-box h2{border:none;color:#005C4F;font-size:22px}
+</style>
+</head>
+<body>
+
+<header>
+  <button type="button" class="back-btn" onclick="goBack()">Back</button>
+  <div class="brand" id="storeName">Style Forever</div>
+  <div style="width:52px"></div>
+</header>
+
+<div class="container">
+  <div id="productView" class="card">
+    <div class="grid-2">
+      <div>
+        <img id="pImg" class="prod-img" src="" alt="Product">
+      </div>
+      <div>
+        <h1 id="pName"></h1>
+        <div class="price">
+          <span id="pPrice"></span>
+          <span id="pOldPrice" class="old-price"></span>
+        </div>
+        <div id="pDesc" style="font-size:13px;color:#555;margin-bottom:14px"></div>
+        <span class="label">সাইজ বাছাই করুন</span>
+        <div id="sizeList" class="size-list"></div>
+        <span class="label">পরিমাণ</span>
+        <div class="qty-box">
+          <button type="button" onclick="changeQty(-1)">-</button>
+          <span id="qtyVal">1</span>
+          <button type="button" onclick="changeQty(1)">+</button>
+        </div>
+        <button type="button" class="btn-primary" onclick="goToCheckout()">Buy Now</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="checkoutView" class="hidden">
+    <div class="grid-2">
+      <div class="card">
+        <h2>ডেলিভারি তথ্য</h2>
+        <label class="label">আপনার নাম *</label>
+        <input type="text" id="custName" placeholder="সম্পূর্ণ নাম লিখুন">
+        <label class="label">মোবাইল নম্বর (১১ ডিজিট) *</label>
+        <input type="tel" id="custPhone" placeholder="01XXXXXXXXX">
+        <label class="label">সম্পূর্ণ ঠিকানা *</label>
+        <textarea id="custAddress" rows="2" oninput="autoDetectZone()" placeholder="বাসা নং, রোড, থানা, জেলা লিখুন"></textarea>
+        <label class="label">জেলা</label>
+        <select id="custDistrict" onchange="autoDetectZone()">
+          <option value="">জেলা নির্বাচন করুন</option>
+        </select>
+        <label class="label">ডেলিভারি জোন</label>
+        <div class="zone-grid">
+          <label class="zone-opt"><input type="radio" name="zone" value="inside" checked onchange="updateTotals()"><span>Dhaka (৳60)</span></label>
+          <label class="zone-opt"><input type="radio" name="zone" value="sub" onchange="updateTotals()"><span>Sub (৳100)</span></label>
+          <label class="zone-opt"><input type="radio" name="zone" value="outside" onchange="updateTotals()"><span>Outside (৳130)</span></label>
+        </div>
+        <label class="label">অর্ডার নোট (ঐচ্ছিক)</label>
+        <input type="text" id="custNote" placeholder="বিশেষ নির্দেশনা থাকলে লিখুন">
+        <label class="label">পেমেন্ট পদ্ধতি</label>
+        <div style="border:1px solid #005C4F;background:#f0f7f5;padding:10px;border-radius:6px;font-size:13px;font-weight:600;color:#005C4F">
+          Cash on Delivery (পণ্য হাতে পেয়ে মূল্য পরিশোধ)
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>অর্ডার সামারি</h2>
+        <div class="summary-item">
+          <img id="sumImg" src="" alt="">
+          <div style="flex:1">
+            <div id="sumName" style="font-size:13px;font-weight:700"></div>
+            <div id="sumMeta" style="font-size:12px;color:#666"></div>
+          </div>
+          <div id="sumItemPrice" style="font-size:13px;font-weight:700"></div>
+        </div>
+        <div class="coupon-row">
+          <input type="text" id="couponCode" placeholder="কুপন কোড (যেমন: SAVE50)">
+          <button type="button" class="coupon-btn" onclick="applyCoupon()">Apply</button>
+        </div>
+        <div id="couponMsg" class="hidden"></div>
+        <div class="row"><span>সাবটোটাল</span><span id="subTotal">৳0</span></div>
+        <div id="discRow" class="row hidden" style="color:#005C4F"><span>ডিসকাউন্ট</span><span id="discVal">-৳0</span></div>
+        <div class="row"><span>ডেলিভারি চার্জ</span><span id="delFee">৳60</span></div>
+        <div class="total-row"><span>সর্বমোট</span><span id="grandTotal">৳0</span></div>
+        <div id="formErr" class="err-msg hidden"></div>
+        <button type="button" class="btn-primary" onclick="submitOrder()">Confirm Order</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="successView" class="card success-box hidden">
+    <h2>অর্ডার কনফার্ম হয়েছে!</h2>
+    <p style="font-size:14px;color:#555;margin:10px 0">ধন্যবাদ। আপনার অর্ডারটি সফলভাবে গ্রহণ করা হয়েছে।</p>
+    <div id="orderReceipt" style="font-size:13px;background:#f9f9f9;border:1px solid #eee;padding:12px;border-radius:6px;margin:14px auto;max-width:400px;text-align:left"></div>
+    <button type="button" class="btn-primary" style="max-width:240px" onclick="resetOrder()">নতুন অর্ডার করুন</button>
+  </div>
+</div>
+
+<script>
+const PRODUCT = {
+  storeName: "Style Forever",
+  name: "Premium Cotton Polo Shirt",
+  price: 650,
+  oldPrice: 850,
+  description: "১০০% প্রিমিয়াম কটন ফেব্রিক, আরামদায়ক ও টেকসই।",
+  image: "https://res.cloudinary.com/dwgvvzbvn/image/upload/v1788708839/b5fnlbs8a19t3hutx5wd.jpg",
+  sizes: ["M", "L", "XL", "XXL"]
+};
+
+const DELIVERY_RATES = { inside: 60, sub: 100, outside: 130 };
+const COUPONS = { SAVE50: 50, STYLE100: 100 };
+const DISTRICTS = ["Dhaka","Chattogram","Gazipur","Narayanganj","Cumilla","Sylhet","Rajshahi","Bogura","Khulna","Barishal","Mymensingh","Rangpur","Dinajpur","Jashore","Cox's Bazar","Narsingdi","Tangail","Faridpur","Pabna","Kushtia"];
+
+let selectedSize = PRODUCT.sizes[0] || "";
+let qty = 1;
+let discount = 0;
+
+function init() {
+  document.getElementById("storeName").innerText = PRODUCT.storeName;
+  document.getElementById("pImg").src = PRODUCT.image;
+  document.getElementById("pName").innerText = PRODUCT.name;
+  document.getElementById("pPrice").innerText = "৳" + PRODUCT.price;
+  document.getElementById("pOldPrice").innerText = PRODUCT.oldPrice ? "৳" + PRODUCT.oldPrice : "";
+  document.getElementById("pDesc").innerText = PRODUCT.description;
+
+  const distSelect = document.getElementById("custDistrict");
+  DISTRICTS.forEach(d => {
+    const opt = document.createElement("option");
+    opt.value = d;
+    opt.innerText = d;
+    distSelect.appendChild(opt);
+  });
+
+  renderSizes();
+}
+
+function renderSizes() {
+  const wrap = document.getElementById("sizeList");
+  wrap.innerHTML = "";
+  PRODUCT.sizes.forEach(s => {
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "size-btn" + (s === selectedSize ? " active" : "");
+    btn.innerText = s;
+    btn.onclick = () => {
+      selectedSize = s;
+      renderSizes();
+    };
+    wrap.appendChild(btn);
+  });
+}
+
+function changeQty(delta) {
+  qty = Math.max(1, qty + delta);
+  document.getElementById("qtyVal").innerText = qty;
+}
+
+function goToCheckout() {
+  document.getElementById("productView").classList.add("hidden");
+  document.getElementById("checkoutView").classList.remove("hidden");
+  document.getElementById("sumImg").src = PRODUCT.image;
+  document.getElementById("sumName").innerText = PRODUCT.name;
+  document.getElementById("sumMeta").innerText = (selectedSize ? "Size: " + selectedSize + " | " : "") + "Qty: " + qty;
+  updateTotals();
+  window.scrollTo(0, 0);
+}
+
+function goBack() {
+  if (!document.getElementById("checkoutView").classList.contains("hidden")) {
+    document.getElementById("checkoutView").classList.add("hidden");
+    document.getElementById("productView").classList.remove("hidden");
+  } else if (!document.getElementById("successView").classList.contains("hidden")) {
+    resetOrder();
+  }
+}
+
+function autoDetectZone() {
+  const addr = document.getElementById("custAddress").value.toLowerCase();
+  const dist = document.getElementById("custDistrict").value.toLowerCase();
+  let zone = "inside";
+  const sub = ["savar","ashulia","keraniganj","gazipur","narayanganj","সাভার","গাজীপুর","নারায়ণগঞ্জ"];
+  if (["gazipur","narayanganj"].includes(dist) || sub.some(k => addr.includes(k))) {
+    zone = "sub";
+  } else if ((dist && dist !== "dhaka") || (!addr.includes("dhaka") && !addr.includes("ঢাকা") && addr.length > 8)) {
+    zone = "outside";
+  }
+  const radio = document.querySelector('input[name="zone"][value="' + zone + '"]');
+  if (radio) radio.checked = true;
+  updateTotals();
+}
+
+function applyCoupon() {
+  const code = document.getElementById("couponCode").value.trim().toUpperCase();
+  const msg = document.getElementById("couponMsg");
+  msg.classList.remove("hidden");
+  if (COUPONS[code]) {
+    discount = COUPONS[code];
+    msg.className = "ok-msg";
+    msg.innerText = "কুপন প্রয়োগ হয়েছে: ৳" + discount + " ছাড়";
+  } else {
+    discount = 0;
+    msg.className = "err-msg";
+    msg.innerText = "সঠিক কুপন কোড নয়";
+  }
+  updateTotals();
+}
+
+function updateTotals() {
+  const subtotal = PRODUCT.price * qty;
+  const zoneEl = document.querySelector('input[name="zone"]:checked');
+  const zone = zoneEl ? zoneEl.value : "inside";
+  const fee = DELIVERY_RATES[zone] || 60;
+  const activeDisc = Math.min(discount, subtotal);
+  const total = subtotal - activeDisc + fee;
+
+  document.getElementById("sumItemPrice").innerText = "৳" + subtotal;
+  document.getElementById("subTotal").innerText = "৳" + subtotal;
+  document.getElementById("delFee").innerText = "৳" + fee;
+  document.getElementById("grandTotal").innerText = "৳" + total;
+
+  const discRow = document.getElementById("discRow");
+  if (activeDisc > 0) {
+    discRow.classList.remove("hidden");
+    document.getElementById("discVal").innerText = "-৳" + activeDisc;
+  } else {
+    discRow.classList.add("hidden");
+  }
+  return { subtotal, activeDisc, fee, total };
+}
+
+function submitOrder() {
+  const name = document.getElementById("custName").value.trim();
+  const phone = document.getElementById("custPhone").value.replace(/[^0-9]/g, "");
+  const addr = document.getElementById("custAddress").value.trim();
+  const err = document.getElementById("formErr");
+
+  if (name.length < 2) {
+    err.innerText = "সঠিক নাম লিখুন";
+    err.classList.remove("hidden");
+    return;
+  }
+  if (phone.length !== 11) {
+    err.innerText = "১১ ডিজিটের সঠিক মোবাইল নম্বর দিন";
+    err.classList.remove("hidden");
+    return;
+  }
+  if (addr.length < 5) {
+    err.innerText = "বিস্তারিত ঠিকানা লিখুন";
+    err.classList.remove("hidden");
+    return;
+  }
+  err.classList.add("hidden");
+
+  const t = updateTotals();
+  const orderId = "ORD-" + Math.floor(10000 + Math.random() * 90000);
+  document.getElementById("orderReceipt").innerHTML =
+    "<div><b>Order ID:</b> " + orderId + "</div>" +
+    "<div><b>নাম:</b> " + name + "</div>" +
+    "<div><b>ফোন:</b> " + phone + "</div>" +
+    "<div><b>ঠিকানা:</b> " + addr + "</div>" +
+    "<div><b>পণ্য:</b> " + PRODUCT.name + " (" + selectedSize + " x " + qty + ")</div>" +
+    "<div><b>মোট বিল:</b> ৳" + t.total + " (Cash on Delivery)</div>";
+
+  document.getElementById("checkoutView").classList.add("hidden");
+  document.getElementById("successView").classList.remove("hidden");
+  window.scrollTo(0, 0);
+}
+
+function resetOrder() {
+  qty = 1;
+  discount = 0;
+  document.getElementById("qtyVal").innerText = 1;
+  document.getElementById("couponCode").value = "";
+  document.getElementById("couponMsg").classList.add("hidden");
+  document.getElementById("successView").classList.add("hidden");
+  document.getElementById("productView").classList.remove("hidden");
+}
+
+init();
+</script>
+</body>
+</html>
